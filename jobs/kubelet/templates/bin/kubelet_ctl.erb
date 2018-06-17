@@ -78,7 +78,7 @@ get_hostname_override() {
     hostname_override=$(curl http://metadata.google.internal/computeMetadata/v1/instance/name -H "Metadata-Flavor: Google")
   elif [[ "azure" == "$cloud_provider" ]]; then
     # K8s 1.9 Azure provider assumes  the hostname == nodename and is required to resolve the VM instance ID
-    hostname_override=
+    hostname_override=$(curl "http://169.254.169.254/metadata/instance/compute/name?api-version=2017-08-01&format=text" -H "Metadata:true")
   else
     hostname_override=<%= spec.ip %>
   fi
